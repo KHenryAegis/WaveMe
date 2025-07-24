@@ -34,3 +34,37 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## 后端服务（Express + MySQL）
+
+### 环境变量（src/server/.env）
+```
+MYSQL_HOST=localhost
+MYSQL_USER=root
+MYSQL_PASSWORD=yourpassword
+MYSQL_DATABASE=waveme
+MYSQL_PORT=3306
+```
+
+### 启动后端服务
+```bash
+cd src/server
+pnpm install
+pnpm dev
+```
+
+### 用户表结构示例
+```sql
+CREATE TABLE users (
+  id VARCHAR(36) PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL
+);
+```
+
+### 用户 API
+- `POST   /users`      创建用户（body: { name, email }）
+- `GET    /users`      获取所有用户
+- `GET    /users/:id`  获取单个用户
+- `PUT    /users/:id`  更新用户（body: { name, email }）
+- `DELETE /users/:id`  删除用户
