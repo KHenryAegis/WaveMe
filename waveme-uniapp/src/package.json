@@ -1,0 +1,19 @@
+{
+    "id": "audio-cc",
+    "name": "音频播放组件及DEMO",
+    "displayName": "音频播放组件及DEMO",
+    "version": "1.1.1",
+    "description": "简单音频播放组件及使用demo，支持多音频播放，倍速，音频切换，首次进度调整等",
+    "keywords": [
+        "音频",
+        "音频播放",
+        "音频播放器",
+        "播放器"
+    ],
+    "dcloudext": {
+        "category": [
+            "前端组件",
+            "通用组件"
+        ]
+    }
+}

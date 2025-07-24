@@ -1,0 +1,653 @@
+{
+  "globalStyle": {
+    "navigationStyle": "default",
+    "navigationBarTitleText": "unibest",
+    "navigationBarBackgroundColor": "#f8f8f8",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#FFFFFF"
+  },
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "^wd-(.*)": "wot-design-uni/components/wd-$1/wd-$1.vue",
+      "^(?!z-paging-refresh|z-paging-load-more)z-paging(.*)": "z-paging/components/z-paging$1/z-paging$1.vue"
+    }
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#5A9685",
+    "backgroundColor": "#F8F8F8",
+    "borderStyle": "black",
+    "height": "50px",
+    "fontSize": "10px",
+    "iconWidth": "24px",
+    "spacing": "3px",
+    "list": [
+      {
+        "iconPath": "static/tabbar/location.png",
+        "selectedIconPath": "static/tabbar/locationHL.png",
+        "pagePath": "pages/home/home",
+        "text": "我的旅程"
+      },
+      {
+        "iconPath": "static/tabbar/tool.png",
+        "selectedIconPath": "static/tabbar/toolHL.png",
+        "pagePath": "pages/tool/tool",
+        "text": "工具箱"
+      },
+      {
+        "iconPath": "static/tabbar/personal.png",
+        "selectedIconPath": "static/tabbar/personalHL.png",
+        "pagePath": "pages/my/my",
+        "text": "个人信息"
+      }
+    ]
+  },
+  "pages": [
+    {
+      "path": "pages/home/home",
+      "type": "home",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "NFC测试"
+      }
+    },
+    {
+      "path": "pages/admin/admin",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "我的旅程"
+      }
+    },
+    {
+      "path": "pages/admin/inquiry",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "我的旅程"
+      }
+    },
+    {
+      "path": "pages/admin/user",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "我的旅程"
+      }
+    },
+    {
+      "path": "pages/diaryList/diaryDetail",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/diaryList/diaryList",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "心情日记"
+      },
+      "needLogin": true
+    },
+    {
+      "path": "pages/feeling/feeling",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "心情日记"
+      },
+      "needLogin": true
+    },
+    {
+      "path": "pages/ganyu/ganyu",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "干预测试"
+      }
+    },
+    {
+      "path": "pages/ganyu/ganyu_temp",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "临时页面"
+      },
+      "needLogin": true
+    },
+    {
+      "path": "pages/inquiry/before",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "打卡"
+      },
+      "needLogin": true
+    },
+    {
+      "path": "pages/inquiry/end",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "打卡"
+      },
+      "needLogin": true
+    },
+    {
+      "path": "pages/inquiry/eval",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "打卡"
+      }
+    },
+    {
+      "path": "pages/inquiry/first",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/inquiry/huigu",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/inquiry/inquiry",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "干预测试"
+      }
+    },
+    {
+      "path": "pages/inquiry/start",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "打卡"
+      },
+      "needLogin": true
+    },
+    {
+      "path": "pages/inquiry/success",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "打卡"
+      },
+      "needLogin": true
+    },
+    {
+      "path": "pages/journey_common/common",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/journey_common/daolanHome",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "我的旅程"
+      }
+    },
+    {
+      "path": "pages/journey_common/daolanStart",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/journey_common/start_journey",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/login/login",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "login"
+      }
+    },
+    {
+      "path": "pages/login/login_origin",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "login"
+      }
+    },
+    {
+      "path": "pages/mood/mood",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "心情日记"
+      },
+      "needLogin": true
+    },
+    {
+      "path": "pages/my/common",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "个人信息"
+      }
+    },
+    {
+      "path": "pages/my/my",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "个人信息"
+      }
+    },
+    {
+      "path": "pages/tabbar/tabbar",
+      "type": "page"
+    },
+    {
+      "path": "pages/test2/test2",
+      "type": "page",
+      "style": {},
+      "needLogin": true
+    },
+    {
+      "path": "pages/tool/tool",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "工具箱"
+      }
+    },
+    {
+      "path": "pages/tool-huibidangan/huibiDetail",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-huibidangan/huibidangan",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "心情日记"
+      },
+      "needLogin": true
+    },
+    {
+      "path": "pages/tool-huibidangan/input",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-huibidangan/list",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-jiazhishouce/catching",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-jiazhishouce/jiazhiDetail",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-jiazhishouce/jiazhishouce",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "心情日记"
+      },
+      "needLogin": true
+    },
+    {
+      "path": "pages/tool-jiazhishouce/list",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-jiazhishouce/startCatching",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-jienalianxi/input",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-jienalianxi/jienaDetail",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-jienalianxi/jienalianxi",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "心情日记"
+      },
+      "needLogin": true
+    },
+    {
+      "path": "pages/tool-jienalianxi/list",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-qingxucaiji/input",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-qingxucaiji/list",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-qingxucaiji/qingxuDetail",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-qingxucaiji/qingxucaiji",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "心情日记"
+      },
+      "needLogin": true
+    },
+    {
+      "path": "pages/tool-renzhijieli/distance",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-renzhijieli/leaf",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-renzhijieli/renzhijieli",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "心情日记"
+      },
+      "needLogin": true
+    },
+    {
+      "path": "pages/tool-sanjianxiaoshi/input",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-sanjianxiaoshi/list",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-sanjianxiaoshi/sanjianDetail",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-sanjianxiaoshi/sanjianxiaoshi",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "心情日记"
+      },
+      "needLogin": true
+    },
+    {
+      "path": "pages/tool-xingdongjihua/catching",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-xingdongjihua/list",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-xingdongjihua/xingdongDetail",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-xingdongjihua/xingdongjihua",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "心情日记"
+      },
+      "needLogin": true
+    },
+    {
+      "path": "pages/tool-yingduijihua/catching",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-yingduijihua/list",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-yingduijihua/yingduiDetail",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-yingduijihua/yingduijihua",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "心情日记"
+      },
+      "needLogin": true
+    },
+    {
+      "path": "pages/tool-zhengnianlianxi/input",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-zhengnianlianxi/list",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-zhengnianlianxi/startPractise",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-zhengnianlianxi/zhengnianDetail",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-zhengnianlianxi/zhengnianlianxi",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "心情日记"
+      },
+      "needLogin": true
+    },
+    {
+      "path": "pages/tool-zhuanzhudangxia/breath",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-zhuanzhudangxia/scan",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-zhuanzhudangxia/zhuanzhudangxia",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "心情日记"
+      },
+      "needLogin": true
+    },
+    {
+      "path": "pages/tool-zidongsiwei/catching",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-zidongsiwei/list",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-zidongsiwei/siweiDetail",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-zidongsiwei/startCatching",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "导览"
+      }
+    },
+    {
+      "path": "pages/tool-zidongsiwei/zidongsiwei",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "心情日记"
+      },
+      "needLogin": true
+    }
+  ],
+  "subPackages": []
+}
