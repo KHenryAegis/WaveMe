@@ -1,91 +1,53 @@
-<route lang="json5">
-{
-  style: {
-    navigationStyle: 'custom',
-    navigationBarTitleText: '个人信息',
-  },
-  // needLogin: true,
-}
-</route>
 <template>
   <wd-navbar
     fixed
     safeAreaInsetTop
     :title="navbarTitle"
-    left-text="返回"
     left-arrow
-    @click-left="doOperation"
-  ></wd-navbar>
-  <view class="main-container">
-    <!-- <view style="height: 200rpx"></view> -->
-    <view :style="{ marginTop: top + 44 + 'px' }">
-      <!-- 只显示一张图片 -->
-      <image :src="imgUrl" mode="widthFix" style="width: 100%" />
-    </view>
-
-    <!-- <view class="operation-area">
-      <view class="operation-btn" @click="doOperation">
-        <img :src="operationIcon" style="width: 50px; height: 50px" />
-        <view style="width: 100%; font-size: 18px; text-align: center">返回</view>
-      </view>
-    </view> -->
+    @click-left="handleBack"
+  />
+  
+  <view class="image-container">
+    <image :src="imageUrl" mode="widthFix" class="content-image" />
   </view>
+  
+  <tabbar :selected="currentTab" />
 </template>
 
 <script lang="ts" setup>
-const username = ref('')
+import { ref, onMounted } from 'vue'
+import tabbar from '@/components/tabbar.vue'
 
-const imgUrl = ref('')
-const operationIcon = 'http://115.159.83.61:9000/common/back.png'
+const imageUrl = ref('')
 const navbarTitle = ref('')
-const top = ref(0)
-const groupId = ref(0)
-// onLoad(() => {
-//   console.log(userStore.userInfo)
-// })
-// 获取屏幕边界到安全区域距离
-const { safeAreaInsets } = uni.getSystemInfoSync()
+const currentTab = ref(1) // 个人中心对应的tab
 
-onLoad(async (param) => {
-  imgUrl.value = 'http://115.159.83.61:9000/' + param.url
-  console.log('imgUrl:', imgUrl.value)
-
-  groupId.value = param.groupId
-  console.log('groupId:', groupId.value)
-
-  navbarTitle.value = param.title
-
-  console.log('safeAreaInsets', safeAreaInsets)
-  top.value = safeAreaInsets.top
+onMounted(() => {
+  const pages = getCurrentPages()
+  const currentPage = pages[pages.length - 1]
+  const options = currentPage.options || {}
+  
+  if (options.url) {
+    imageUrl.value = `http://115.159.83.61:9000/${options.url}`
+  }
+  
+  if (options.title) {
+    navbarTitle.value = options.title
+  }
 })
 
-const doOperation = () => {
-  uni.switchTab({ url: '/pages/my/my' })
+const handleBack = () => {
+  uni.switchTab({ url: '/pages/my/index' })
 }
 </script>
 
-<style>
-.main-container {
-  /* height: 1000px;
-  overflow: hidden; */
-  background: rgb(237, 248, 243);
+<style scoped>
+.image-container {
+  padding-top: 100rpx;
 }
 
-.operation-area {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  width: 85%;
-  height: auto;
-  margin: 20px auto;
-}
-
-.operation-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 75px;
-  height: auto;
+.content-image {
+  width: 100%;
+  display: block;
 }
 </style>

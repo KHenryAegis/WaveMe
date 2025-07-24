@@ -33,12 +33,6 @@ export default defineUniPages({
         text: '我的旅程',
       },
       {
-        iconPath: 'static/tabbar/tool.png',
-        selectedIconPath: 'static/tabbar/toolHL.png',
-        pagePath: 'pages/tool/tool',
-        text: '工具箱',
-      },
-      {
         iconPath: 'static/tabbar/personal.png',
         selectedIconPath: 'static/tabbar/personalHL.png',
         pagePath: 'pages/my/my',
