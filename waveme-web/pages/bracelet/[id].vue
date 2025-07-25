@@ -15,31 +15,26 @@
       :bracelet-id="braceletId"
       :template-data="templateData"
       :title="templateTitle"
-    >
-      <template #tabbar>
-        <BraceletTabbar
-          :current-tab-index="currentTabIndex"
-          :tabs="tabs"
-          :template-type="currentTemplate"
-          :style-config="templateStyleConfig"
-          @switch-tab="switchToTab"
-          @prev-tab="prevTab"
-          @next-tab="nextTab"
-        />
-      </template>
-    </component>
+      :current-tab-index="currentTabIndex"
+      :tabs="tabs"
+      @switch-tab="switchToTab"
+      @prev-tab="prevTab"
+      @next-tab="nextTab"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, defineAsyncComponent } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import BraceletTabbar from '~/components/BraceletTabbar.vue'
+
 
 // 动态加载模板组件
-const DefaultTemplate = defineAsyncComponent(() => import('~/components/templates/DefaultTemplate.vue'))
-const AdxTemplate = defineAsyncComponent(() => import('~/components/templates/AdxTemplate.vue'))
-const MinimalTemplate = defineAsyncComponent(() => import('~/components/templates/MinimalTemplate.vue'))
+const DefaultTemplate = defineAsyncComponent(() => import('~/components/templates/Default.vue'))
+const AdxTemplate = defineAsyncComponent(() => import('~/components/templates/Adx.vue'))
+const AcademicTemplate = defineAsyncComponent(() => import('~/components/templates/Academic.vue'))
+const DailyHobbiesTemplate = defineAsyncComponent(() => import('~/components/templates/DailyHobbies.vue'))
+const MinimalTemplate = defineAsyncComponent(() => import('~/components/templates/Minimal.vue'))
 
 const route = useRoute()
 const router = useRouter()
@@ -59,7 +54,7 @@ const tabs = [
 ]
 
 // 当前模板
-const currentTemplate = ref('default')
+let currentTemplate = ref('academic') // 默认使用学术模板
 const templateData = ref({})
 const isLoading = ref(true)
 
@@ -67,6 +62,8 @@ const isLoading = ref(true)
 const templateComponents = {
   default: DefaultTemplate,
   adxdefault: AdxTemplate,
+  academic: AcademicTemplate,
+  dailyhobbies: DailyHobbiesTemplate,
   minimal: MinimalTemplate
 }
 
@@ -94,6 +91,28 @@ const templateConfigs = {
     },
     title: 'ADX Creative Studio'
   },
+  academic: {
+    tabbarBackground: 'rgba(47, 79, 79, 0.9)',
+    primaryColor: '#2F4F4F',
+    cardBackground: '#f8f9fa',
+    data: {
+      greeting: "学术研究者",
+      description: ['Academic Researcher', 'Knowledge Seeker'],
+      tags: ['学术', '研究', '论文', '知识']
+    },
+    title: 'Academic Profile'
+  },
+  dailyhobbies: {
+    tabbarBackground: 'rgba(255, 182, 193, 0.9)',
+    primaryColor: '#FF69B4',
+    cardBackground: '#fff5f8',
+    data: {
+      greeting: "生活爱好者",
+      description: ['Daily Life Enthusiast', 'Hobby Collector'],
+      tags: ['生活', '爱好', '日常', '兴趣']
+    },
+    title: 'Daily Hobbies'
+  },
   minimal: {
     tabbarBackground: 'rgba(255, 255, 255, 0.8)',
     primaryColor: '#667eea',
@@ -109,7 +128,8 @@ const templateConfigs = {
 
 // 计算属性
 const currentTemplateComponent = computed(() => {
-  return templateComponents[currentTemplate.value] || templateComponents.default
+  // return templateComponents[currentTemplate.value] || templateComponents.academic
+  return templateComponents[currentTemplate.value] || templateComponents.academic
 })
 
 const templateStyleConfig = computed(() => {
@@ -142,11 +162,13 @@ const fetchTemplate = async () => {
     currentTemplate.value = mockResponse.template
     const config = templateConfigs[currentTemplate.value]
     templateData.value = config.data
-    
-    console.log('使用模板:', currentTemplate.value)
+
+    currentTemplate.value== 'academic'
+    console.log('使用模板11:', currentTemplate.value)
   } catch (error) {
     console.error('Failed to fetch template:', error)
     currentTemplate.value = 'default'
+    currentTemplate.value== 'academic'
     templateData.value = templateConfigs.default.data
   } finally {
     isLoading.value = false
@@ -156,28 +178,21 @@ const fetchTemplate = async () => {
 // 切换标签页
 const switchToTab = (index) => {
   currentTabIndex.value = index
-  const tab = tabs[index]
-  
-  if (tab.name === 'home') {
-    return
-  } else if (tab.name === 'photo-wall') {
-    router.push(`/bracelet/${braceletId}/adx`)
-  } else if (tab.name === 'tools') {
-    router.push(`/bracelet/${braceletId}/tool`)
-  } else if (tab.name === 'settings') {
-    router.push(`/bracelet/${braceletId}/settings`)
-  }
+  // 不再使用路由跳转，只是简单切换tab状态
+  console.log('切换到标签页:', index, tabs[index])
 }
 
 const prevTab = () => {
   if (currentTabIndex.value > 0) {
-    switchToTab(currentTabIndex.value - 1)
+    currentTabIndex.value = currentTabIndex.value - 1
+    console.log('切换到上一个标签页:', currentTabIndex.value)
   }
 }
 
 const nextTab = () => {
   if (currentTabIndex.value < tabs.length - 1) {
-    switchToTab(currentTabIndex.value + 1)
+    currentTabIndex.value = currentTabIndex.value + 1
+    console.log('切换到下一个标签页:', currentTabIndex.value)
   }
 }
 
@@ -190,8 +205,7 @@ onMounted(() => {
 <style>
 #app-container {
   width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
 }
 
 .loading-container {
