@@ -1,53 +1,61 @@
 package com.adventure.waveme.controller;
 
+import com.adventure.waveme.dao.UserRepository;
 import com.adventure.waveme.po.User;
-import com.adventure.waveme.service.UserService;
+
+import com.adventure.waveme.dto.CreateUserRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-// 3. Controller 实现
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createdUser = userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    @PostMapping("/create")
+    public ResponseEntity<?> createUser(@RequestBody CreateUserRequest req) {
+        System.out.println("Creating user with request: " + req);
+        User user = new User(
+            req.getPhone(),
+            req.getBraceletId(),
+            req.getModuleId(),
+            req.getBraceletColor()
+        );
+        try {
+            user = userRepository.save(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(user);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body(Map.of("error", "Database error", "details", e.getMessage()));
+        }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        User updatedUser = userService.updateUser(id, user,true);
-        return ResponseEntity.ok(updatedUser);
+    @GetMapping("/getUserByPhone")
+    public ResponseEntity<?> getUserByPhone(@RequestParam(required = false) String phone) {
+        if (phone == null || phone.isBlank()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                 .body(Map.of("error", "Missing phone parameter"));
+        }
+        try {
+            Optional<User> optionalUser = userRepository.findByPhone(phone);
+            if (optionalUser.isPresent()) {
+                return ResponseEntity.ok(optionalUser.get());
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                     .body(Map.of("error", "User not found"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body(Map.of("error", "Database error", "details", e.getMessage()));
+        }
     }
 
-    // 删除用户（仅限管理员）
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    // 获取所有用户（管理员）
-    @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
-    }
-
-    // 获取单个用户（管理员或自己）
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        User user = userService.getUserById(id);
-        return ResponseEntity.ok(user);
-    }
 }

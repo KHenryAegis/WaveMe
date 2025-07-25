@@ -1,37 +1,40 @@
 package com.adventure.waveme.po;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 
-import java.util.Date;
-
 @Entity
+@Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+     @Column(name = "bracelet_id", nullable = false, unique = true)
+    private String braceletId;
+
     @Column(nullable = false, unique = true)
-    private String username;
+    private String phone;
 
-    @Column(nullable = false)
-    private String password;
+    @Column(name = "scene_style")
+    private String sceneStyle;
 
-    @Column(nullable = false)
-    private String role; // 主账号或子账号
+    @Column(name = "bracelet_color")
+    private String braceletColor;
 
-    @Column(nullable = false)
-    private Date createdAt;
 
-    @Column(name = "wechat_qr_path", length = 2048)
-    private String wechatQrPath; // 新增微信二维码路径字段
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TemplateEntity> templates;
 
-    // getter和setter
-    public String getWechatQrPath() {
-        return wechatQrPath;
-    }
+    public User() {}
 
-    public void setWechatQrPath(String wechatQrPath) {
-        this.wechatQrPath = wechatQrPath;
+    public User(String phone, String braceletId, String moduleId, String braceletColor) {
+        this.phone = phone;
+        this.braceletId = braceletId;
+        this.moduleId = moduleId;
+        this.braceletColor = braceletColor;
     }
 
     // Getters and Setters
@@ -43,35 +46,44 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getPassword() {
-        return password;
+    public String getBraceletId() {
+        return braceletId;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setBraceletId(String braceletId) {
+        this.braceletId = braceletId;
     }
 
-    public String getRole() {
-        return role;
+    public String getModuleId() {
+        return moduleId;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setModuleId(String moduleId) {
+        this.moduleId = moduleId;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public String getBraceletColor() {
+        return braceletColor;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setBraceletColor(String braceletColor) {
+        this.braceletColor = braceletColor;
     }
-}
+
+    public List<TemplateEntity> getTemplates() {
+        return templates;
+    }
+
+    public void setTemplates(List<TemplateEntity> templates) {
+        this.templates = templates;
+    }
+
+}  
