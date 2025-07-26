@@ -145,44 +145,36 @@ const pageData = ref({
     ]
   },
   tools: {
-    title: 'ADX 工具箱',
-    subtitle: '提升效率，释放创意潜能',
+    title: 'AdX 创造集',
+    subtitle: 'AdX2025 创造的作品',
     tools: [
       {
         id: 1,
         name: '色彩生成器',
         description: '智能生成和谐配色方案',
         icon: 'fas fa-palette',
-        usageCount: 156,
-        status: 'active',
-        features: ['AI智能配色', '导出多种格式', '色彩搭配建议', '实时预览']
+        docUrl: 'https://docs.colorhunt.co'
       },
       {
         id: 2,
         name: '字体匹配器',
         description: '找到完美的字体组合',
         icon: 'fas fa-font',
-        usageCount: 89,
-        status: 'active',
-        features: ['字体配对推荐', '风格分类', '字重对比', 'Web字体支持']
+        docUrl: 'https://help.fontpair.co'
       },
       {
         id: 3,
         name: '灵感收集器',
         description: '收集和整理设计灵感',
         icon: 'fas fa-lightbulb',
-        usageCount: 234,
-        status: 'maintenance',
-        features: ['快速截图', '标签分类', '云端同步', '团队共享']
+        docUrl: 'https://help.pinterest.com'
       },
       {
         id: 4,
         name: 'AI设计助手',
         description: '人工智能辅助设计',
         icon: 'fas fa-robot',
-        usageCount: 0,
-        status: 'coming_soon',
-        features: ['智能布局', '元素推荐', '风格转换', '自动优化']
+        docUrl: 'https://help.figma.com'
       }
     ]
   },

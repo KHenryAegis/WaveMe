@@ -74,11 +74,11 @@ const templateConfigs = {
     primaryColor: '#667eea',
     cardBackground: '#ffffff',
     data: {
-      greeting: "Hi, I'm Lambert :)",
-      description: ['fullstack dev', 'fandom of Muelle'],
-      tags: ['技术', '产品', '后端', '站长']
+      greeting: "Hi, I'm Wave! :)",
+      description: ['随身艺术', '自在终端'],
+      tags: ['双NFC手饰', '个性化模版定制', '你的艺术终端']
     },
-    title: 'Home Page'
+    title: 'Wave！'
   },
   adxdefault: {
     tabbarBackground: 'rgba(26, 26, 26, 0.9)',

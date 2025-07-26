@@ -22,7 +22,7 @@
         <div class="intro-text">
           <p class="greeting">{{ templateData.greeting }}</p>
           <p v-for="desc in templateData.description" :key="desc" class="description">{{ desc }}</p>
-          <p class="bracelet-info">手环ID: {{ braceletId }}</p>
+          <!-- <p class="bracelet-info">手环ID: {{ braceletId }}</p> -->
         </div>
       </div>
 
@@ -92,7 +92,7 @@ const props = defineProps({
 const emit = defineEmits(['switchTab', 'prevTab', 'nextTab'])
 
 const containerStyle = computed(() => ({
-  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  background: 'linear-gradient(135deg, #bbdefb 0%, #e3f2fd 50%, #e1f5fe 100%)',
   fontFamily: "'Indie Flower', cursive",
   textAlign: 'center',
   color: '#333',

@@ -18,10 +18,11 @@
             v-for="(template, index) in templates"
             :key="template.id"
             class="template-card"
-            :style="getCardStyle(index)"
+            :style="{ ...getCardStyle(index), background: template.backgroundColor || 'rgba(255, 255, 255, 0.4)' }"
             :class="{ 
               'is-active-hover': isWrapperHovered && index === currentIndex,
-              'is-selected': template.id === selectedTemplateId
+              'is-selected': template.id === selectedTemplateId,
+              'adx-theme': template.id === 3
             }"
           >
             <div class="card-content">
@@ -133,14 +134,15 @@ const templates = ref([
     name: '学术主题',
     greeting: "学术社交必备",
     description: '学术简介、学术简历、研究成果',
-    avatar: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=400&q=80',
+    avatar: `${config.public.minioBase}/phd.png`,
   },
   {
     id: 3,
     name: 'AdventureX 2025限定主题',
     greeting: "为创造失眠",
-    description: '纪念页面、照片墙、创造集、事件记录',
+    description: '纪念页面、照片墙、创造集、交友圈',
     avatar: `${config.public.minioBase}/adx-icon.jpg`,
+    backgroundColor: 'linear-gradient(135deg, #ff6b35 0%, #f7931e 100%)', // 橙色渐变背景
   },
   {
     id: 4,
@@ -527,6 +529,23 @@ onMounted(() => {
 
 .template-card.is-selected .greeting {
   color: #667eea;
+}
+
+.template-card.adx-theme .text-content {
+  color: #ffffff;
+}
+
+.template-card.adx-theme .greeting {
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.template-card.adx-theme .description {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.template-card.adx-theme .description.detail {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .template-action-area {
