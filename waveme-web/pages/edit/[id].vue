@@ -102,32 +102,56 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import { checkUserExists, getUserBraceletColor } from '~/api/user';
+
+// 获取运行时配置
+const config = useRuntimeConfig()
+const route = useRoute()
+console.log(route.params.id)
+// 获取当前用户ID，添加空值检查
+const userId = computed(() => {
+  if (!route.params || !route.params.id) return null
+  return typeof route.params.id === 'string' ? route.params.id : String(route.params.id)
+})
+
+// 用户状态
+const userExists = ref(null) // null表示还未检查，true存在，false不存在
+const isCheckingUser = ref(false)
 
 // --- 数据模型 ---
 const templates = ref([
   {
     id: 1,
-    name: 'WaveMe 主题',
-    greeting: "Hi, I'm Lambert :)",
-    description: 'Designer of WaveMe',
+    name: '默认主题',
+    greeting: "设置你的个人主页",
+    description: '个人介绍、作品集展示',
     avatar: 'https://images.unsplash.com/photo-1557683316-973673baf926?w=400&q=80',
   },
   {
     id: 2,
-    name: '兴趣爱好',
-    greeting: "记录你的热爱",
-    description: '分享生活中的点滴闪光',
+    name: '学术主题',
+    greeting: "学术社交必备",
+    description: '学术简介、学术简历、研究成果',
     avatar: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=400&q=80',
   },
   {
     id: 3,
-    name: 'AdventureX 限定',
-    greeting: "探索未知之境",
-    description: '为每一次冒险喝彩',
-    avatar: 'https://images.unsplash.com/photo-1554034483-26ab35e38253?w=400&q=80',
+    name: 'AdventureX 2025限定主题',
+    greeting: "为创造失眠",
+    description: '纪念页面、照片墙、创造集、事件记录',
+    avatar: `${config.public.minioBase}/adx-icon.jpg`,
+  },
+  {
+    id: 4,
+    name: '兴趣主题',
+    greeting: "记录你的热爱",
+    description: '音乐集、影评、书评、旅行日记',
+    avatar: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=400&q=80',
   }
 ]);
+
+console.log(templates)
 
 // --- 轮播图核心逻辑 ---
 const currentIndex = ref(1); // 修改：默认从中间的模板开始（索引1）
@@ -206,6 +230,52 @@ const handleTouchEnd = () => {
 };
 
 // --- 事件处理 ---
+/**
+ * 检查用户是否存在
+ */
+const checkUser = async () => {
+  if (!userId.value) return
+  
+  isCheckingUser.value = true
+  try {
+    const exists = await checkUserExists(userId.value)
+    userExists.value = exists
+    
+    if (!exists) {
+      console.warn(`用户 ${userId.value} 不存在`)
+      // 可以在这里添加用户不存在的处理逻辑，比如跳转到404页面
+    } else {
+      console.log(`用户 ${userId.value} 存在`)
+      // 用户存在，可以继续加载用户相关数据
+      await loadUserData()
+    }
+  } catch (error) {
+    console.error('检查用户时发生错误:', error)
+    userExists.value = false
+  } finally {
+    isCheckingUser.value = false
+  }
+}
+
+/**
+ * 加载用户数据
+ */
+const loadUserData = async () => {
+  if (!userId.value) return
+  
+  try {
+    // 获取用户手环颜色
+    const braceletColor = await getUserBraceletColor(userId.value)
+    console.log(`用户手环颜色: ${braceletColor}`)
+    
+    // 可以在这里更新相关的用户数据
+    // 比如更新背景颜色、主题等
+    
+  } catch (error) {
+    console.error('加载用户数据时发生错误:', error)
+  }
+}
+
 const selectTemplate = (template) => {
   selectedTemplateId.value = template.id;
   console.log(`用户选择了模版: ${template.name}`);
@@ -221,9 +291,43 @@ const selectCurrentTemplate = () => {
 const editTemplate = (template) => {
   // 确保只有当前激活的卡片能触发编辑
   if (template.id !== templates.value[currentIndex.value].id) return;
-  alert(`正在进入 "${template.name}" 的编辑页面...`);
+  
   console.log(`用户点击了编辑按钮，准备进入编辑页面: ${template.name}`);
+  
+  // 获取当前路由的ID参数
+  const currentUserId = userId.value;
+  if (!currentUserId) {
+    console.error('无法获取用户ID');
+    return;
+  }
+  
+  // 根据模板ID跳转到不同的编辑页面，使用当前用户ID作为路由参数
+  let editUrl = '';
+  switch (template.id) {
+    case 1:
+      editUrl = `/edit/default/${currentUserId}`;
+      break;
+    case 2:
+      editUrl = `/edit/academic/${currentUserId}`;
+      break;
+    case 3:
+      editUrl = `/edit/adx/${currentUserId}`;
+      break;
+    case 4:
+      editUrl = `/edit/interest/${currentUserId}`;
+      break;
+    default:
+      editUrl = `/edit/template${template.id}/${currentUserId}`;
+  }
+  
+  // 使用Nuxt的navigateTo进行页面跳转
+  navigateTo(editUrl);
 };
+
+// 页面初始化时检查用户
+onMounted(() => {
+  // checkUser()
+})
 
 </script>
 
@@ -460,14 +564,14 @@ const editTemplate = (template) => {
 }
 
 .template-action-btn.current-template {
-  background: rgba(34, 197, 94, 0.1);
-  color: #059669;
-  border: 2px solid #10b981;
+  background: rgba(99, 102, 241, 0.1);
+  color: #4f46e5;
+  border: 2px solid #6366f1;
   cursor: default;
 }
 
 .template-action-btn.current-template svg {
-  color: #10b981;
+  color: #6366f1;
 }
 
 .dots-nav {

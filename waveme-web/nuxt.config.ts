@@ -9,7 +9,8 @@ export default defineNuxtConfig({
     
     // 公共键（暴露给客户端）
     public: {
-      API_BASE: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:8080/api'
+      API_BASE: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:8080/api',
+      minioBase: process.env.NUXT_PUBLIC_MINIO_BASE || 'https://minio.example.com'
     }
   }
 })
