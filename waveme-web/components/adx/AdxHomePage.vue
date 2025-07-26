@@ -24,7 +24,8 @@
       </div>
 
       <div class="intro-text">
-        <p class="greeting">{{ homeData.greeting }}</p>
+        <p v-if="Array.isArray(homeData.greeting)" v-for="greet in homeData.greeting" :key="greet" class="greeting">{{ greet }}</p>
+        <p v-else class="greeting">{{ homeData.greeting }}</p>
         <p v-for="desc in homeData.description" :key="desc" class="description">{{ desc }}</p>
         <p class="bracelet-info">{{ homeData.braceletInfo }}</p>
       </div>

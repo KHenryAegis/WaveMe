@@ -103,9 +103,9 @@ const currentPageComponent = computed(() => {
 // Mock数据 - 后续可以从API获取
 const pageData = ref({
   home: {
-    title: 'ADX Creative Studio',
-    greeting: 'AdventureX2025 限定纪念页',
-    description: ['Creative Design & Development', 'Digital Innovation Hub'],
+    title: '为创造失眠',
+    greeting: ['AdventureX2025', '限定纪念页'],
+    description: ['中国·杭州', '2025年7月23日-27日'],
     braceletInfo: `手环ID: ${props.braceletId}`,
     tags: ['创意', '设计', 'ADX', '视觉'],
     socialLinks: [
