@@ -10,17 +10,23 @@
         class="tool-item"
       >
         <div class="tool-icon">
-          <i :class="tool.icon"></i>
+          <img 
+            v-if="tool.icon.startsWith('http') || tool.icon.startsWith('/')" 
+            :src="tool.icon" 
+            :alt="tool.name"
+            class="tool-icon-image"
+          />
+          <i v-else :class="tool.icon"></i>
         </div>
         <div class="tool-content">
           <h3 class="tool-name">{{ tool.name }}</h3>
           <p class="tool-description">{{ tool.description }}</p>
           <div class="tool-actions">
             <button 
-              @click.stop="copyDocUrl(tool.docUrl)"
+              @click.stop="copyUrl(tool)"
               class="action-btn doc-btn"
             >
-              � 复制说明文档地址
+              📋 复制{{ tool.type === 'web' ? '体验地址' : '说明文档地址' }}
             </button>
           </div>
         </div>
@@ -39,20 +45,22 @@ const props = defineProps({
   }
 })
 
-const copyDocUrl = async (docUrl) => {
+const copyUrl = async (tool) => {
   try {
-    await navigator.clipboard.writeText(docUrl)
-    alert('说明文档链接已复制到剪贴板！')
+    await navigator.clipboard.writeText(tool.docUrl)
+    const messageType = tool.type === 'web' ? '体验地址' : '说明文档地址'
+    alert(`${messageType}已复制到剪贴板！`)
   } catch (err) {
     console.error('复制失败:', err)
     // 降级方案
     const textArea = document.createElement('textarea')
-    textArea.value = docUrl
+    textArea.value = tool.docUrl
     document.body.appendChild(textArea)
     textArea.select()
     document.execCommand('copy')
     document.body.removeChild(textArea)
-    alert('说明文档链接已复制到剪贴板！')
+    const messageType = tool.type === 'web' ? '体验地址' : '说明文档地址'
+    alert(`${messageType}已复制到剪贴板！`)
   }
 }
 </script>
@@ -117,6 +125,21 @@ const copyDocUrl = async (docUrl) => {
   font-size: 2.5rem;
   color: #ff6b35;
   filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.5));
+}
+
+.tool-icon-image {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.5));
+  transition: all 0.3s ease;
+  display: block;
+  margin: 0 auto;
+}
+
+.tool-icon-image:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 15px rgba(255, 107, 53, 0.7));
 }
 
 .tool-content {

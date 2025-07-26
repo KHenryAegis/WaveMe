@@ -120,27 +120,19 @@ const pageData = ref({
     photos: [
       {
         url: `${config.public.minioBase}/adx25photo/photo-example.jpg`,
-        title: 'ADX 2025 启动仪式',
-        description: '全新的创意之旅正式开始',
-        date: '2025-01-15'
+        description: '全新的创意之旅正式开始'
       },
       {
         url: `${config.public.minioBase}/adx25photo/photo-example.jpg`,
-        title: '设计工作坊',
-        description: '与顶尖设计师交流学习',
-        date: '2025-01-20'
+        description: '与顶尖设计师交流学习'
       },
       {
         url: `${config.public.minioBase}/adx25photo/photo-example.jpg`,
-        title: '创意展示',
-        description: '展示最新的设计作品',
-        date: '2025-01-25'
+        description: '展示最新的设计作品'
       },
       {
         url: `${config.public.minioBase}/adx25photo/photo-example.jpg`,
-        title: '团队合作',
-        description: '协作创造无限可能',
-        date: '2025-01-30'
+        description: '协作创造无限可能'
       }
     ]
   },
@@ -150,16 +142,18 @@ const pageData = ref({
     tools: [
       {
         id: 1,
-        name: '色彩生成器',
-        description: '智能生成和谐配色方案',
-        icon: 'fas fa-palette',
-        docUrl: 'https://docs.colorhunt.co'
+        name: 'Sendream · 寄念',
+        description: "寄出思念，收到跨越时空的AI回信",
+        icon: `${config.public.minioBase}/adx25photo/Sendream.png`,
+        type: 'web',
+        docUrl: 'https://sendream.localai.me'
       },
       {
         id: 2,
         name: '字体匹配器',
         description: '找到完美的字体组合',
         icon: 'fas fa-font',
+        type: 'else',
         docUrl: 'https://help.fontpair.co'
       },
       {
@@ -167,6 +161,7 @@ const pageData = ref({
         name: '灵感收集器',
         description: '收集和整理设计灵感',
         icon: 'fas fa-lightbulb',
+        type: 'else',
         docUrl: 'https://help.pinterest.com'
       },
       {
@@ -174,6 +169,7 @@ const pageData = ref({
         name: 'AI设计助手',
         description: '人工智能辅助设计',
         icon: 'fas fa-robot',
+        type: 'else',
         docUrl: 'https://help.figma.com'
       }
     ]
@@ -184,17 +180,17 @@ const pageData = ref({
     settings: [
       {
         id: 1,
+        avatar: `${config.public.minioBase}/adx25photo/pen.jpg`,
+        nickname: 'pen',
+        bio: '目前在做一个非常好玩的硬件+ai应用创业项目，0硬件和代码基础，用ai痛苦手搓中。持续关注ai方向应用，点子王或行动派都可以一起聊聊😊',
+        wechat: 'hello_pen'
+      },
+      {
+        id: 2,
         avatar: `${config.public.minioBase}/adx25photo/boy.png`,
         nickname: 'Sunny日天',
         bio: '像雷军一样定义WAVE！',
         wechat: 'adx_creative_wang'
-      },
-      {
-        id: 2,
-        avatar: `${config.public.minioBase}/adx25photo/working.png`,
-        nickname: 'Lambert',
-        bio: '全栈开发工程师，热爱新技术探索，负责ADX平台架构设计',
-        wechat: 'adx_tech_li'
       },
       {
         id: 3,
@@ -342,7 +338,28 @@ const initFireworks = () => {
   animate()
 }
 
-onMounted(() => {
+onMounted(async () => {
+  
+  // 请求后端获取 photos 数据
+  try {
+    const response = await fetch(`${config.public.API_BASE}/templates/${props.braceletId}/adx/gallery?style=limit`)
+    if (response.ok) {
+      const photosData = await response.json()
+      console.log(photosData)
+      // 更新 photos 数据
+      pageData.value.photos = {
+        title: 'AdX 照片墙',
+        subtitle: '记录精彩瞬间，分享创意灵感',
+        photos: photosData || pageData.value.photos.photos
+      }
+    } else {
+      console.warn('获取照片数据失败，使用默认数据')
+    }
+  } catch (error) {
+    console.error('请求照片数据时出错:', error)
+    // 使用默认的 mock 数据
+  }
+  
   initFireworks()
   console.log(pageData.value)
 })

@@ -187,10 +187,10 @@
           <input type="url" id="photoUrl" v-model="editingPhotoTemp.url" placeholder="http://example.com/image.jpg" required>
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="photoTitle">标题:</label>
-          <input type="text" id="photoTitle" v-model="editingPhotoTemp.title" placeholder="图片标题" required>
-        </div>
+          <input type="text" id="photoTitle" v-model="editingPhotoTemp.title" placeholder="图片标题（可选）">
+        </div> -->
         <div class="form-group">
           <label for="photoDescription">描述:</label>
           <textarea id="photoDescription" v-model="editingPhotoTemp.description" placeholder="图片详细描述"></textarea>
@@ -250,8 +250,8 @@ const fetchTemplateData = async () => {
   
   isLoading.value = true
   try {
-    const apiUrl = `${config.public.API_BASE}/templates/${props.braceletId}/adx`
-    const response = await fetch(apiUrl, {
+    // 请求后端获取 photos 数据
+    const response = await fetch(`${config.public.API_BASE}/templates/${props.braceletId}/adx/gallery?style=limit`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -260,18 +260,19 @@ const fetchTemplateData = async () => {
 
     console.log('Template data response:', response)
     
-    if (!response.ok) {
-      throw new Error(`获取模板数据失败: ${response.status} ${response.statusText}`)
-    }
-    
-    const result = await response.json()
-    
-    // 更新组件数据
-    if (result.status === 200) {
-      if (result.data && Object.keys(result.data).length > 0) {
+    if (response.ok) {
+      const photosData = await response.json()
+      console.log('获取的照片数据:', photosData)
+      
+      // 更新照片数据
+      if (photosData && photosData.length > 0) {
         // 有数据时使用后端数据
-        editablePhotoData.value = JSON.parse(JSON.stringify(result.data))
-        originalPhotoData.value = JSON.parse(JSON.stringify(result.data))
+        editablePhotoData.value = {
+          photos: photosData
+        }
+        originalPhotoData.value = {
+          photos: JSON.parse(JSON.stringify(photosData))
+        }
         
         // 确保每个图片有一个唯一的ID
         ensureUniqueIds(editablePhotoData.value.photos)
@@ -285,9 +286,17 @@ const fetchTemplateData = async () => {
           photos: []
         }
       }
+    } else {
+      console.warn('获取照片数据失败，使用空白状态')
+      editablePhotoData.value = {
+        photos: []
+      }
+      originalPhotoData.value = {
+        photos: []
+      }
     }
   } catch (error) {
-    console.error('获取模板数据错误:', error)
+    console.error('请求照片数据时出错:', error)
     // 请求失败时也显示空白，不影响用户使用
     console.log('请求失败，显示空白模板')
     editablePhotoData.value = {
@@ -542,8 +551,7 @@ const removeSelectedFile = () => {
 const uploadImage = async (file) => {
   const formData = new FormData();
   formData.append('file', file);
-  formData.append('title', editingPhotoTemp.value.title);
-  formData.append('description', editingPhotoTemp.value.description);
+  formData.append('description', editingPhotoTemp.value.description || '');
   
   try {
     // 使用config中配置的baseURL
@@ -565,11 +573,6 @@ const uploadImage = async (file) => {
 
 const savePhotoEdit = async () => {
   // 基础验证
-  if (!editingPhotoTemp.value.title) {
-    alert('标题是必填项！');
-    return;
-  }
-
   if (isNewPhoto.value && !selectedFile.value) {
     alert('请选择要上传的图片文件！');
     return;
