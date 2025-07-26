@@ -20,7 +20,7 @@ public class FileController {
     public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file, 
                                     @RequestParam("description") String description) {
         System.out.println(file.getOriginalFilename());
-        FileEntity saved = storageService.storeFile(file);
+        FileEntity saved = storageService.storeFile(file, description);
         UploadFileResponse resp = new UploadFileResponse(saved.getId(), saved.getName(), description, saved.getUrl());
         return ResponseEntity.status(HttpStatus.OK).body(resp);
     }

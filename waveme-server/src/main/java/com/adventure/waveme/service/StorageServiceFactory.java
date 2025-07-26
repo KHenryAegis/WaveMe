@@ -22,8 +22,8 @@ public class StorageServiceFactory implements StorageService {
     }
 
     @Override
-    public FileEntity storeFile(org.springframework.web.multipart.MultipartFile file) {
-        return delegate.storeFile(file);
+    public FileEntity storeFile(org.springframework.web.multipart.MultipartFile file, String description) {
+        return delegate.storeFile(file, description);
     }
 
     @Override

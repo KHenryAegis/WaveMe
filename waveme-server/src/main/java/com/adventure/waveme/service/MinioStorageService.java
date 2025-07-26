@@ -33,7 +33,7 @@ public class MinioStorageService implements StorageService {
     }
 
     @Override
-    public FileEntity storeFile(MultipartFile file) {
+    public FileEntity storeFile(MultipartFile file, String description) {
         try {
             String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
             minioClient.putObject(PutObjectArgs.builder()
@@ -43,7 +43,7 @@ public class MinioStorageService implements StorageService {
                     .contentType(file.getContentType())
                     .build());
             String fullUrl = minioUrl + "/" + bucket + "/" + filename;
-            return fileRepository.save(new FileEntity(filename, fullUrl, bucket + "/" + filename));
+            return fileRepository.save(new FileEntity(filename, fullUrl, description, bucket + "/" + filename));
         } catch (Exception e) {
             throw new RuntimeException("Minio store file failed", e);
         }

@@ -37,21 +37,9 @@ public class TemplateEntity {
 
     // 定义不同场景的标准字段（作为常量）
     public static class Fields {
-        // 简历场景字段
-        public static final String RESUME_GITHUB = "github";
-        public static final String RESUME_BIO = "bio";
-        public static final String RESUME_AVATAR = "avatar";
-        public static final String RESUME_CONTENT = "content";
-        
+
         // 作品集场景字段
         public static final String PORTFOLIO_GALLERY = "gallery";
-        public static final String PORTFOLIO_DESCRIPTION = "description";
-        public static final String PORTFOLIO_SKILLS = "skills";
-        
-        // 社交场景字段
-        public static final String SOCIAL_LINKS = "links";
-        public static final String SOCIAL_INTERESTS = "interests";
-        public static final String SOCIAL_BIO = "bio";
     }
 
     @PrePersist

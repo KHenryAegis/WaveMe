@@ -1,87 +1,95 @@
 <template>
-  <div class="minimal-template" :style="containerStyle">
+  <div class="minimal-template">
+    <!-- Animated background with large, drifting circles -->
     <div class="minimal-bg">
-      <div class="geometric-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
-      </div>
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
     </div>
     
-    <main class="home-page">
-      <h1 class="title">{{ title }}</h1>
-
-      <div class="profile-section">
-        <div class="avatar-container minimal-avatar">
-          <!-- 简约的头像设计 -->
-          <div class="avatar-circle">
-            <div class="avatar-inner">
-              <span class="initial">{{ getInitial(templateData.greeting) }}</span>
-            </div>
+    <!-- Main content card with entry animation -->
+    <main class="home-card">
+      
+      <!-- Custom Avatar Section with breathing animation -->
+      <div class="avatar-section">
+        <div class="pig-avatar">
+          <!-- Pig Head -->
+          <div class="pig-head">
+            <div class="eye left"></div>
+            <div class="eye right"></div>
           </div>
+          <!-- Ears -->
+          <div class="ear left"></div>
+          <div class="ear right"></div>
           
-          <!-- 简约的社交链接 -->
-          <div class="social-links">
-            <a href="https://github.com" target="_blank" class="social-link">G</a>
-            <a href="#" class="social-link">W</a>
-            <a href="https://www.linkedin.com" target="_blank" class="social-link">L</a>
-          </div>
-        </div>
-
-        <div class="intro-text">
-          <p class="greeting">{{ templateData.greeting }}</p>
-          <p v-for="desc in templateData.description" :key="desc" class="description">{{ desc }}</p>
-          <p class="bracelet-info">{{ braceletId }}</p>
+          <!-- Social Bubbles with staggered pop-in animation -->
+          <div class="social-bubble github">Github</div>
+          <div class="social-bubble wechat">Wechat</div>
+          <div class="social-bubble linkedin">领英</div>
         </div>
       </div>
 
+      <!-- Introduction Text with fade-in animation -->
+      <div class="intro-section">
+        <h2 class="greeting">{{ templateData.greeting || "Hi, I'm Lambert :)" }}</h2>
+        <p v-for="desc in (templateData.description || ['fullstack dev', 'fandom of Muelle'])" :key="desc" class="description">{{ desc }}</p>
+      </div>
+
+      <!-- Tags Section with fade-in animation -->
       <div class="tags-section">
-        <span v-for="tag in templateData.tags" :key="tag" class="tag minimal-tag">{{ tag }}</span>
+        <span v-for="tag in (templateData.tags || ['技术', '产品', '后端', '增长'])" :key="tag" class="tag">{{ tag }}</span>
+      </div>
+
+      <!-- Carousel Controls with fade-in animation -->
+      <div class="carousel-controls">
+        <button class="arrow-btn">
+          <span class="arrow left"></span>
+        </button>
+        <div class="dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+        <button class="arrow-btn">
+          <span class="arrow right"></span>
+        </button>
       </div>
     </main>
 
+    <!-- This slot will render the tab bar on the right -->
     <slot name="tabbar"></slot>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
-
-const props = defineProps({
+// Props remain the same to accept data from the parent
+defineProps({
   braceletId: String,
   templateData: Object,
-  title: {
-    type: String,
-    default: 'Minimal Design'
-  }
+  title: String
 })
-
-const containerStyle = computed(() => ({
-  background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
-  fontFamily: "'Inter', sans-serif",
-  textAlign: 'center',
-  color: '#2d3748',
-  position: 'relative',
-  width: '100vw',
-  height: '100vh',
-  overflow: 'hidden',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between'
-}))
-
-const getInitial = (name) => {
-  return name ? name.charAt(0).toUpperCase() : 'M'
-}
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* Import a font that matches the hand-drawn style */
+@import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Noto+Sans+SC:wght@400;500&display=swap');
 
 .minimal-template {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  background-color: #eef2f9; /* Light blue-grey background */
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* Background shapes */
 .minimal-bg {
   position: absolute;
   top: 0;
@@ -90,238 +98,243 @@ const getInitial = (name) => {
   height: 100%;
   pointer-events: none;
   z-index: 1;
-}
-
-.geometric-shapes {
-  position: relative;
-  width: 100%;
-  height: 100%;
+  overflow: hidden;
 }
 
 .shape {
   position: absolute;
   border-radius: 50%;
-  opacity: 0.1;
-  animation: float-minimal 15s ease-in-out infinite;
+  background-color: #dbe2f1; /* Color of the background circles */
+  animation: drift 30s ease-in-out infinite alternate;
 }
 
 .shape-1 {
-  width: 200px;
-  height: 200px;
-  background: #667eea;
-  top: 10%;
-  left: 10%;
-  animation-delay: 0s;
+  width: 40vw;
+  height: 40vw;
+  max-width: 300px;
+  max-height: 300px;
+  top: 5%;
+  left: -10vw;
+  animation-delay: -5s;
 }
 
 .shape-2 {
-  width: 150px;
-  height: 150px;
-  background: #764ba2;
-  bottom: 20%;
-  right: 15%;
-  animation-delay: 5s;
+  width: 50vw;
+  height: 50vw;
+  max-width: 400px;
+  max-height: 400px;
+  bottom: 15%;
+  right: -15vw;
 }
 
-.shape-3 {
-  width: 100px;
-  height: 100px;
-  background: #f093fb;
-  top: 60%;
-  left: 70%;
-  animation-delay: 10s;
-}
-
-@keyframes float-minimal {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(180deg); }
-}
-
-.home-page {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 40px 20px 20px;
-  margin: 2rem 20px;
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.7);
-  position: relative;
+/* Main card styling */
+.home-card {
+  width: 100%;
+  max-width: 370px;
+  height: calc(100% - 80px);
+  max-height: 700px;
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 30px;
   z-index: 2;
-  transition: all 0.3s ease;
-}
-
-.title {
-  font-size: 2.2rem;
-  font-weight: 300;
-  margin-bottom: 30px;
-  color: #2d3748;
-  letter-spacing: -0.5px;
-}
-
-.profile-section {
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   align-items: center;
-  margin-bottom: 30px;
-}
-
-.avatar-container {
+  padding: 20px;
+  text-align: center;
   position: relative;
-  margin-bottom: 20px;
+  box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.08);
+  /* Entry Animation */
+  animation: card-enter 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
-.avatar-circle {
+/* --- AVATAR & SOCIALS --- */
+.avatar-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.pig-avatar {
+  position: relative;
   width: 100px;
   height: 100px;
+  /* Breathing Animation */
+  animation: avatar-float 5s ease-in-out infinite;
+}
+
+.pig-head {
+  width: 100px;
+  height: 100px;
+  background: #fff;
+  border: 3px solid #000;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-  transition: transform 0.3s ease;
+  position: relative;
 }
 
-.avatar-circle:hover {
-  transform: scale(1.05);
+.eye {
+  position: absolute;
+  width: 8px;
+  height: 20px;
+  background-color: #000;
+  top: 45%;
 }
+.eye.left { left: 30px; }
+.eye.right { right: 30px; }
 
-.avatar-inner {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.ear {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 25px solid #000;
+  top: -12px;
 }
+.ear.left { left: 10px; transform: rotate(-20deg); }
+.ear.right { right: 10px; transform: rotate(20deg); }
 
-.initial {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #667eea;
-}
-
-.social-links {
-  display: flex;
-  gap: 10px;
-  margin-top: 15px;
-}
-
-.social-link {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: rgba(102, 126, 234, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: #667eea;
+.social-bubble {
+  position: absolute;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 16px;
+  padding: 6px 14px;
   font-weight: 500;
-  font-size: 12px;
-  transition: all 0.3s ease;
+  font-size: 16px;
+  color: #000;
+  opacity: 0; /* Initially hidden for animation */
+  /* Pop-in animation */
+  animation: bubble-pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.social-bubble::after { /* The little triangle pointer */
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
 }
 
-.social-link:hover {
-  background: #667eea;
-  color: white;
-  transform: translateY(-2px);
-}
+.social-bubble.github { top: 0px; left: -65px; animation-delay: 0.6s; }
+.social-bubble.github::after { right: -14px; top: 6px; border-left-color: #000; }
 
-.intro-text {
-  text-align: center;
+.social-bubble.wechat { top: 10px; right: -80px; animation-delay: 0.8s; }
+.social-bubble.wechat::after { left: -14px; top: 8px; border-right-color: #000; }
+
+.social-bubble.linkedin { bottom: -5px; right: -40px; font-family: 'Noto Sans SC', sans-serif; padding: 6px 12px; animation-delay: 1.0s; }
+.social-bubble.linkedin::after { left: 10px; top: -14px; border-bottom-color: #000; }
+
+
+/* --- TEXT & TAGS --- */
+.intro-section, .tags-section, .carousel-controls {
+  opacity: 0; /* Initially hidden */
+  animation: fade-in-up 0.6s ease-out forwards;
 }
+.intro-section { margin: 1rem 0; animation-delay: 1.2s; }
+.tags-section { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 2rem 0; animation-delay: 1.4s; }
+.carousel-controls { width: 100%; display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 1rem; animation-delay: 1.6s; }
 
 .greeting {
-  font-size: 1.3rem;
-  font-weight: 500;
-  margin-bottom: 10px;
-  color: #2d3748;
+  font-family: 'Gaegu', cursive;
+  font-size: 26px;
+  font-weight: 700;
+  color: #000;
+  margin: 0 0 10px 0;
+  position: relative;
 }
+.greeting::before { content: '✦'; margin-right: 8px; }
 
-.description {
-  font-size: 0.95rem;
-  margin-bottom: 5px;
-  opacity: 0.7;
-  color: #4a5568;
-}
-
-.bracelet-info {
-  font-size: 0.85rem;
-  font-weight: 400;
-  margin-top: 10px;
-  color: #667eea;
-  font-family: 'Monaco', monospace;
-  background: rgba(102, 126, 234, 0.1);
-  padding: 4px 8px;
-  border-radius: 8px;
-  display: inline-block;
-}
-
-.tags-section {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 20px;
-}
+.description { font-size: 16px; color: #000; margin: 2px 0; }
 
 .tag {
-  padding: 6px 14px;
-  border-radius: 15px;
-  font-size: 13px;
-  font-weight: 400;
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  border: 1px solid rgba(102, 126, 234, 0.2);
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 12px;
+  padding: 6px 18px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+  transition: transform 0.2s ease-in-out, background-color 0.2s;
 }
-
 .tag:hover {
-  background: #667eea;
-  color: white;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  transform: translateY(-3px) scale(1.05);
+  background-color: #fafafa;
 }
 
-@media (max-width: 768px) {
-  .home-page {
-    margin: 2rem 10px;
-    padding: 30px 15px 15px;
+/* --- CAROUSEL CONTROLS --- */
+.arrow-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+.arrow-btn:hover { transform: scale(1.1); }
+.arrow-btn:active { transform: scale(0.95); transition-duration: 0.1s; }
+
+.arrow { width: 10px; height: 10px; border-top: 3px solid #000; border-right: 3px solid #000; }
+.arrow.left { transform: rotate(-135deg); margin-left: 4px; }
+.arrow.right { transform: rotate(45deg); margin-right: 4px; }
+
+.dots { display: flex; gap: 8px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background-color: #d9d9d9; }
+.dot.active { background-color: #000; }
+
+/* --- KEYFRAME ANIMATIONS --- */
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
   }
-  
-  .title {
-    font-size: 1.8rem;
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
-  
-  .avatar-circle {
-    width: 80px;
-    height: 80px;
+}
+
+@keyframes bubble-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
   }
-  
-  .avatar-inner {
-    width: 72px;
-    height: 72px;
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
-  
-  .initial {
-    font-size: 1.5rem;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  .greeting {
-    font-size: 1.1rem;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .tag {
-    padding: 5px 10px;
-    font-size: 12px;
+}
+
+@keyframes avatar-float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(-10vw) translateY(-5vh) rotate(0deg);
+  }
+  to {
+    transform: translateX(10vw) translateY(5vh) rotate(30deg);
   }
 }
 </style>

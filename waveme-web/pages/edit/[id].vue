@@ -123,7 +123,7 @@ const isCheckingUser = ref(false)
 // --- 数据模型 ---
 const templates = ref([
   {
-    id: 1,
+    id: 0,
     name: '默认主题',
     greeting: "设置你的个人主页",
     description: '个人介绍、作品集展示',
@@ -145,7 +145,7 @@ const templates = ref([
     backgroundColor: 'linear-gradient(135deg, #ff6b35 0%, #f7931e 100%)', // 橙色渐变背景
   },
   {
-    id: 4,
+    id: 1,
     name: '兴趣主题',
     greeting: "记录你的热爱",
     description: '音乐集、影评、书评、旅行日记',
@@ -306,20 +306,20 @@ const editTemplate = (template) => {
   // 根据模板ID跳转到不同的编辑页面，使用当前用户ID作为路由参数
   let editUrl = '';
   switch (template.id) {
-    case 1:
-      editUrl = `/edit/default/${currentUserId}`;
-      break;
-    case 2:
-      editUrl = `/edit/academic/${currentUserId}`;
-      break;
-    case 3:
-      editUrl = `/edit/adx/${currentUserId}`;
-      break;
-    case 4:
-      editUrl = `/edit/interest/${currentUserId}`;
-      break;
-    default:
-      editUrl = `/edit/template${template.id}/${currentUserId}`;
+      case 1:
+        editUrl = `/edit/daily/${currentUserId}`;
+        break;
+      case 2:
+        editUrl = `/edit/academic/${currentUserId}`;
+        break;
+      case 3:
+        editUrl = `/edit/adx/${currentUserId}`;
+        break;
+      case 4:
+        editUrl = `/edit/mini/${currentUserId}`;
+        break;
+      default:
+        editUrl = `/edit/default/${currentUserId}`;
   }
   
   // 使用Nuxt的navigateTo进行页面跳转

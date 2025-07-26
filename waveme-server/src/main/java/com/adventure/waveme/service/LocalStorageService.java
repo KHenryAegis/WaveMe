@@ -27,14 +27,14 @@ public class LocalStorageService implements StorageService {
     }
 
     @Override
-    public FileEntity storeFile(MultipartFile file) {
+    public FileEntity storeFile(MultipartFile file, String description) {
         String original = StringUtils.cleanPath(file.getOriginalFilename());
         String filename = System.currentTimeMillis() + "_" + original;
         try {
             Path target = this.uploadDir.resolve(filename);
             Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
             String url = "/uploads/" + filename;
-            return fileRepository.save(new FileEntity(filename, url, target.toString()));
+            return fileRepository.save(new FileEntity(filename, url, description, target.toString()));
         } catch (IOException ex) {
             throw new RuntimeException("Failed to store file " + filename, ex);
         }

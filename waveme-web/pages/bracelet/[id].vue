@@ -26,8 +26,7 @@
 
 <script setup>
 import { ref, computed, onMounted, defineAsyncComponent } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-
+import { useRoute } from 'vue-router'
 
 // 动态加载模板组件
 const DefaultTemplate = defineAsyncComponent(() => import('~/components/templates/Default.vue'))
@@ -35,9 +34,9 @@ const AdxTemplate = defineAsyncComponent(() => import('~/components/templates/Ad
 const AcademicTemplate = defineAsyncComponent(() => import('~/components/templates/Academic.vue'))
 const DailyHobbiesTemplate = defineAsyncComponent(() => import('~/components/templates/DailyHobbies.vue'))
 const MinimalTemplate = defineAsyncComponent(() => import('~/components/templates/Minimal.vue'))
+const FortuneTemplate = defineAsyncComponent(() => import('~/components/templates/Fortune.vue'))
 
 const route = useRoute()
-const router = useRouter()
 
 // 获取手环ID
 const braceletId = route.params.id
@@ -53,8 +52,8 @@ const tabs = [
   { name: 'settings', title: 'Settings' }
 ]
 
-// 当前模板
-let currentTemplate = ref('academic') // 默认使用学术模板
+// 当前模板状态
+const currentTemplate = ref('default') // 默认值设为'default'
 const templateData = ref({})
 const isLoading = ref(true)
 
@@ -64,7 +63,8 @@ const templateComponents = {
   adxdefault: AdxTemplate,
   academic: AcademicTemplate,
   dailyhobbies: DailyHobbiesTemplate,
-  minimal: MinimalTemplate
+  minimal: MinimalTemplate,
+  fortune: FortuneTemplate // **修复**: 添加了缺失的逗号
 }
 
 // 模板配置映射
@@ -118,30 +118,34 @@ const templateConfigs = {
     primaryColor: '#667eea',
     cardBackground: '#ffffff',
     data: {
-      greeting: "简约设计美学",
+      greeting: "Hi, I'm Wave:)⭐",
       description: ['Less is More', 'Clean & Simple'],
       tags: ['简约', '设计', '美学', '纯净']
     },
     title: 'Minimal Design'
+  },
+  // **新增**: 添加 fortune 模板的配置
+  fortune: {
+    tabbarBackground: 'rgba(26, 22, 46, 0.9)',
+    primaryColor: '#f8cd5a',
+    cardBackground: '#1a1c2e',
+    data: {
+      greeting: "星运占卜",
+      description: ['探索宇宙奥秘', '揭示命运轨迹'],
+      tags: ['星座', 'MBTI', '运势', '占卜']
+    },
+    title: '星运占卜'
   }
 }
 
 // 计算属性
 const currentTemplateComponent = computed(() => {
-  // return templateComponents[currentTemplate.value] || templateComponents.academic
-  return templateComponents[currentTemplate.value] || templateComponents.academic
-})
-
-const templateStyleConfig = computed(() => {
-  const config = templateConfigs[currentTemplate.value] || templateConfigs.default
-  return {
-    tabbarBackground: config.tabbarBackground,
-    primaryColor: config.primaryColor,
-    cardBackground: config.cardBackground
-  }
+  // **优化**: 后备组件改为 DefaultTemplate
+  return templateComponents[currentTemplate.value] || templateComponents.default
 })
 
 const templateTitle = computed(() => {
+  // **优化**: 后备配置改为 templateConfigs.default
   const config = templateConfigs[currentTemplate.value] || templateConfigs.default
   return config.title
 })
@@ -154,21 +158,28 @@ const fetchTemplate = async () => {
     // 模拟API调用延迟
     await new Promise(resolve => setTimeout(resolve, 1000))
     
-    // 模拟API调用
-    const mockResponse = {
-      template: braceletId === 'adx001' ? 'adxdefault' : 'default'
-    }
+    // **核心修改**: 使用映射表来决定模板
+    const braceletToTemplateMap = {
+      'adx001': 'adxdefault',
+      'aca001': 'academic',
+      'daily001': 'dailyhobbies',
+      'mini001': 'minimal',
+      'fortune001': 'fortune'
+    };
     
-    currentTemplate.value = mockResponse.template
-    const config = templateConfigs[currentTemplate.value]
+    // 如果在映射表中找到ID，则使用对应的模板，否则使用 'default'
+    const templateName = braceletToTemplateMap[braceletId] || 'default';
+    
+    currentTemplate.value = templateName
+    const config = templateConfigs[currentTemplate.value] || templateConfigs.default;
     templateData.value = config.data
 
-    currentTemplate.value== 'academic'
-    console.log('使用模板11:', currentTemplate.value)
+    console.log(`手环ID '${braceletId}' 使用模板: '${currentTemplate.value}'`);
+    
   } catch (error) {
     console.error('Failed to fetch template:', error)
+    // 发生错误时也回退到默认模板
     currentTemplate.value = 'default'
-    currentTemplate.value== 'academic'
     templateData.value = templateConfigs.default.data
   } finally {
     isLoading.value = false
@@ -178,21 +189,18 @@ const fetchTemplate = async () => {
 // 切换标签页
 const switchToTab = (index) => {
   currentTabIndex.value = index
-  // 不再使用路由跳转，只是简单切换tab状态
-  console.log('切换到标签页:', index, tabs[index])
+  console.log('切换到标签页:', index, tabs[index].name)
 }
 
 const prevTab = () => {
   if (currentTabIndex.value > 0) {
     currentTabIndex.value = currentTabIndex.value - 1
-    console.log('切换到上一个标签页:', currentTabIndex.value)
   }
 }
 
 const nextTab = () => {
   if (currentTabIndex.value < tabs.length - 1) {
     currentTabIndex.value = currentTabIndex.value + 1
-    console.log('切换到下一个标签页:', currentTabIndex.value)
   }
 }
 
@@ -203,6 +211,7 @@ onMounted(() => {
 </script>
 
 <style>
+/* 样式部分保持不变 */
 #app-container {
   width: 100vw;
   min-height: 100vh;
@@ -214,7 +223,6 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
   background-color: black;
   position: relative;
   overflow: hidden;
@@ -247,7 +255,6 @@ onMounted(() => {
   100% { transform: rotate(360deg); }
 }
 
-/* 添加背景动画效果 */
 .loading-container::before {
   content: '';
   position: absolute;

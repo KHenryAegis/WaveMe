@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import com.adventure.waveme.dao.FileRepository;
 import com.adventure.waveme.dao.TemplateRepository;
 import com.adventure.waveme.dao.UserRepository;
+import com.adventure.waveme.dto.CreateGalleryRequest;
 import com.adventure.waveme.po.FileEntity;
 import com.adventure.waveme.po.TemplateEntity;
 import com.adventure.waveme.po.User;
@@ -135,8 +136,7 @@ public class TemplateController {
     public ResponseEntity<TemplateEntity> updateTemplateGallery(
             @PathVariable String braceletId,
             @PathVariable String scene,
-            @RequestParam String style,
-            @RequestParam("data") List<Long> fileIds) {
+            @RequestBody CreateGalleryRequest req) {
 
         // 1. 查找要更新的模板
         Optional<TemplateEntity> templateOpt = templateRepository.findByBraceletIdAndScene(braceletId, scene);
@@ -153,7 +153,7 @@ public class TemplateController {
 
         // 3. 将文件ID列表转换为逗号分隔的字符串
         // 例如 [1, 5, 12] -> "1,5,12"
-        String galleryIdsString = fileIds.stream()
+        String galleryIdsString = req.getData().stream()
                                          .map(String::valueOf)
                                          .collect(Collectors.joining(","));
 
@@ -162,7 +162,7 @@ public class TemplateController {
         template.setContent(content);
 
         // 5. 更新 style
-        template.setStyle(style);
+        template.setStyle(req.getStyle());
 
         // 6. 保存并返回更新后的模板
         TemplateEntity savedTemplate = templateRepository.save(template);

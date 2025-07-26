@@ -22,12 +22,13 @@ public class FileEntity {
     private String path;
 
     public FileEntity() {}
-    public FileEntity(String name, String url, String path) {
+   
+    public FileEntity(String name, String url, String description, String path) {
         this.name = name;
         this.url = url;
+        this.description = description;
         this.path = path;
     }
-
 
     public Long getId() {
         return id;

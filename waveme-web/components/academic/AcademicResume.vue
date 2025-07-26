@@ -188,16 +188,6 @@ const resumeData = ref({
   ],
   skills: [
     {
-      category: '实验技能',
-      items: [
-        { name: '材料合成', level: 5 },
-        { name: '电化学测试', level: 5 },
-        { name: 'XRD分析', level: 4 },
-        { name: 'SEM/TEM', level: 4 },
-        { name: 'XPS光谱', level: 3 }
-      ]
-    },
-    {
       category: '计算技能',
       items: [
         { name: 'Python编程', level: 4 },
@@ -207,23 +197,6 @@ const resumeData = ref({
         { name: 'Origin绘图', level: 5 }
       ]
     },
-    {
-      category: '语言能力',
-      items: [
-        { name: '中文', level: 5 },
-        { name: '英文', level: 4 },
-        { name: '日文', level: 2 }
-      ]
-    },
-    {
-      category: '软技能',
-      items: [
-        { name: '项目管理', level: 4 },
-        { name: '团队协作', level: 5 },
-        { name: '学术写作', level: 4 },
-        { name: '演讲展示', level: 4 }
-      ]
-    }
   ],
   awards: [
     {
