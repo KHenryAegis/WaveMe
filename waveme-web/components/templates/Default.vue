@@ -32,7 +32,7 @@
     </main>
 
     <!-- Default 模板内置的 Tabbar -->
-    <div class="default-tabbar-section">
+    <!-- <div class="default-tabbar-section">
       <button 
         class="default-nav-btn prev-btn" 
         @click="prevTab" 
@@ -64,8 +64,8 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <polyline points="9,18 15,12 9,6"></polyline>
         </svg>
-      </button>
-    </div>
+      </button> 
+     </div> -->
   </div>
 </template>
 
