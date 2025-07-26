@@ -170,8 +170,12 @@ onMounted(() => {
   line-height: 1.5;
   min-height: 60px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  white-space: pre-line;
+  text-align: left;
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 .person-actions {

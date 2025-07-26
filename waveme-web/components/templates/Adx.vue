@@ -84,6 +84,16 @@ const props = defineProps({
 
 const emit = defineEmits(['switchTab', 'prevTab', 'nextTab'])
 
+// 数组随机打乱函数
+const shuffleArray = (array) => {
+  const newArray = [...array]
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[newArray[i], newArray[j]] = [newArray[j], newArray[i]]
+  }
+  return newArray
+}
+
 const fireworksCanvas = ref(null)
 let animationId = null
 const config = useRuntimeConfig()
@@ -139,7 +149,7 @@ const pageData = ref({
   tools: {
     title: 'AdX 创造集',
     subtitle: 'AdX2025 创造的作品',
-    tools: [
+    tools: shuffleArray([
       {
         id: 1,
         name: 'Sendream · 寄念',
@@ -172,41 +182,41 @@ const pageData = ref({
         type: 'else',
         docUrl: 'https://help.figma.com'
       }
-    ]
+    ])
   },
   settings: {
     title: 'AdX 交友圈',
     subtitle: '认识AdX的圈子',
-    settings: [
+    settings: shuffleArray([
       {
         id: 1,
-        avatar: `${config.public.minioBase}/adx25photo/pen.jpg`,
         nickname: 'pen',
         bio: '目前在做一个非常好玩的硬件+ai应用创业项目，0硬件和代码基础，用ai痛苦手搓中。持续关注ai方向应用，点子王或行动派都可以一起聊聊😊',
+        avatar: `${config.public.minioBase}/adx25photo/pen.jpg`,
         wechat: 'hello_pen'
       },
       {
         id: 2,
-        avatar: `${config.public.minioBase}/adx25photo/boy.png`,
         nickname: 'Sunny日天',
         bio: '像雷军一样定义WAVE！',
+        avatar: `${config.public.minioBase}/adx25photo/boy.png`,
         wechat: 'adx_creative_wang'
       },
       {
         id: 3,
-        avatar: `${config.public.minioBase}/adx25photo/avatar3.jpg`,
         nickname: '设计师小张',
         bio: '视觉设计专家，擅长品牌设计和插画创作，为ADX注入艺术灵感',
+        avatar: `${config.public.minioBase}/adx25photo/avatar3.jpg`,
         wechat: 'adx_design_zhang'
       },
       {
         id: 4,
-        avatar: `${config.public.minioBase}/adx25photo/avatar4.jpg`,
         nickname: '产品经理小刘',
         bio: '产品策略专家，负责ADX产品规划和用户体验优化',
+        avatar: `${config.public.minioBase}/adx25photo/avatar4.jpg`,
         wechat: 'adx_product_liu'
       }
-    ]
+    ])
   }
 })
 
@@ -357,6 +367,47 @@ onMounted(async () => {
     }
   } catch (error) {
     console.error('请求照片数据时出错:', error)
+    // 使用默认的 mock 数据
+  }
+
+  try {
+    const response = await fetch(`${config.public.API_BASE}/projects`)
+    if (response.ok) {
+      const projectsData = await response.json()
+      console.log('projectsData.value',projectsData)
+      // 更新 tools 数据并随机打乱
+      pageData.value.tools = {
+        title: 'AdX 创造集',
+        subtitle: ' AdventureX2025 创造的作品',
+        tools: shuffleArray(projectsData)
+      }
+      console.log('获取项目数据成功:', pageData.value.tools)
+    } else {
+      console.warn('获取项目数据失败，使用默认数据')
+    }
+  } catch (error) {
+    console.error('请求工具数据时出错:', error)
+    // 使用默认的 mock 数据
+  }
+
+
+  try {
+    const response = await fetch(`${config.public.API_BASE}/profiles`)
+    if (response.ok) {
+      const profilesData = await response.json()
+      console.log('profilesData',profilesData)
+      // 更新 settings 数据并随机打乱
+      pageData.value.settings = {
+        title: 'AdX 交友圈',
+        subtitle: ' AdventureX2025 想结交大家的朋友们',
+        settings: shuffleArray(profilesData)
+      }
+      console.log('获取交友数据成功:', pageData.value.settings)
+    } else {
+      console.warn('获取交友数据失败，使用默认数据')
+    }
+  } catch (error) {
+    console.error('请求交友数据时出错:', error)
     // 使用默认的 mock 数据
   }
   

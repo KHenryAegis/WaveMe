@@ -10,10 +10,11 @@
         class="tool-item"
       >
         <div class="tool-icon">
+          
           <img 
             v-if="tool.icon.startsWith('http') || tool.icon.startsWith('/')" 
             :src="tool.icon" 
-            :alt="tool.name"
+            :alt="tool.icon"
             class="tool-icon-image"
           />
           <i v-else :class="tool.icon"></i>
@@ -38,12 +39,14 @@
 <script setup>
 import { ref } from 'vue'
 
+
 const props = defineProps({
   toolsData: {
     type: Object,
     required: true
   }
 })
+
 
 const copyUrl = async (tool) => {
   try {
