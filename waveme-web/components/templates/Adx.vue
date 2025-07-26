@@ -86,7 +86,7 @@ const emit = defineEmits(['switchTab', 'prevTab', 'nextTab'])
 
 const fireworksCanvas = ref(null)
 let animationId = null
-
+const config = useRuntimeConfig()
 // 页面组件映射
 const pageComponents = {
   0: AdxHomePage,    // Home
@@ -115,29 +115,29 @@ const pageData = ref({
     ]
   },
   photos: {
-    title: 'ADX 照片墙',
+    title: 'AdX 照片墙',
     subtitle: '记录精彩瞬间，分享创意灵感',
     photos: [
       {
-        url: 'https://picsum.photos/400/300?random=1',
+        url: `${config.public.minioBase}/adx25photo/photo-example.jpg`,
         title: 'ADX 2025 启动仪式',
         description: '全新的创意之旅正式开始',
         date: '2025-01-15'
       },
       {
-        url: 'https://picsum.photos/400/300?random=2',
+        url: `${config.public.minioBase}/adx25photo/photo-example.jpg`,
         title: '设计工作坊',
         description: '与顶尖设计师交流学习',
         date: '2025-01-20'
       },
       {
-        url: 'https://picsum.photos/400/300?random=3',
+        url: `${config.public.minioBase}/adx25photo/photo-example.jpg`,
         title: '创意展示',
         description: '展示最新的设计作品',
         date: '2025-01-25'
       },
       {
-        url: 'https://picsum.photos/400/300?random=4',
+        url: `${config.public.minioBase}/adx25photo/photo-example.jpg`,
         title: '团队合作',
         description: '协作创造无限可能',
         date: '2025-01-30'
@@ -179,95 +179,36 @@ const pageData = ref({
     ]
   },
   settings: {
-    title: '个性化设置',
-    subtitle: '自定义你的ADX体验',
-    sections: [
+    title: 'AdX 交友圈',
+    subtitle: '认识AdX的圈子',
+    settings: [
       {
-        id: 'appearance',
-        name: '外观设置',
-        icon: 'fas fa-paint-brush',
-        settings: [
-          {
-            id: 'theme',
-            name: '主题模式',
-            description: '选择你喜欢的视觉主题',
-            type: 'select',
-            value: 'dark',
-            options: [
-              { value: 'dark', label: '暗黑模式' },
-              { value: 'light', label: '明亮模式' },
-              { value: 'auto', label: '跟随系统' }
-            ]
-          },
-          {
-            id: 'animations',
-            name: '动画效果',
-            description: '启用页面过渡和动画效果',
-            type: 'switch',
-            value: true
-          },
-          {
-            id: 'particles',
-            name: '粒子特效',
-            description: '显示背景粒子动画',
-            type: 'switch',
-            value: true
-          }
-        ]
+        id: 1,
+        avatar: `${config.public.minioBase}/adx25photo/boy.png`,
+        nickname: 'Sunny日天',
+        bio: '像雷军一样定义WAVE！',
+        wechat: 'adx_creative_wang'
       },
       {
-        id: 'privacy',
-        name: '隐私设置',
-        icon: 'fas fa-shield-alt',
-        settings: [
-          {
-            id: 'analytics',
-            name: '数据分析',
-            description: '允许收集匿名使用数据以改进服务',
-            type: 'switch',
-            value: false
-          },
-          {
-            id: 'location',
-            name: '位置服务',
-            description: '允许访问位置信息',
-            type: 'switch',
-            value: false
-          }
-        ]
+        id: 2,
+        avatar: `${config.public.minioBase}/adx25photo/working.png`,
+        nickname: 'Lambert',
+        bio: '全栈开发工程师，热爱新技术探索，负责ADX平台架构设计',
+        wechat: 'adx_tech_li'
       },
       {
-        id: 'notifications',
-        name: '通知设置',
-        icon: 'fas fa-bell',
-        settings: [
-          {
-            id: 'push_notifications',
-            name: '推送通知',
-            description: '接收重要更新和消息',
-            type: 'switch',
-            value: true
-          },
-          {
-            id: 'email_notifications',
-            name: '邮件通知',
-            description: '接收邮件形式的通知',
-            type: 'switch',
-            value: true
-          },
-          {
-            id: 'notification_frequency',
-            name: '通知频率',
-            description: '设置接收通知的频率',
-            type: 'select',
-            value: 'daily',
-            options: [
-              { value: 'realtime', label: '实时' },
-              { value: 'daily', label: '每日汇总' },
-              { value: 'weekly', label: '每周汇总' }
-            ]
-          }
-        ]
+        id: 3,
+        avatar: `${config.public.minioBase}/adx25photo/avatar3.jpg`,
+        nickname: '设计师小张',
+        bio: '视觉设计专家，擅长品牌设计和插画创作，为ADX注入艺术灵感',
+        wechat: 'adx_design_zhang'
+      },
+      {
+        id: 4,
+        avatar: `${config.public.minioBase}/adx25photo/avatar4.jpg`,
+        nickname: '产品经理小刘',
+        bio: '产品策略专家，负责ADX产品规划和用户体验优化',
+        wechat: 'adx_product_liu'
       }
     ]
   }
@@ -403,6 +344,7 @@ const initFireworks = () => {
 
 onMounted(() => {
   initFireworks()
+  console.log(pageData.value)
 })
 
 onUnmounted(() => {

@@ -134,14 +134,14 @@ const templates = ref([
     name: '学术主题',
     greeting: "学术社交必备",
     description: '学术简介、学术简历、研究成果',
-    avatar: `${config.public.minioBase}/phd.png`,
+    avatar: `${config.public.minioBase}/wavemeui/phd.png`,
   },
   {
     id: 3,
     name: 'AdventureX 2025限定主题',
     greeting: "为创造失眠",
     description: '纪念页面、照片墙、创造集、交友圈',
-    avatar: `${config.public.minioBase}/adx-icon.jpg`,
+    avatar: `${config.public.minioBase}/wavemeui/adx-icon.jpg`,
     backgroundColor: 'linear-gradient(135deg, #ff6b35 0%, #f7931e 100%)', // 橙色渐变背景
   },
   {

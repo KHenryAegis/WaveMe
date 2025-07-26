@@ -3,55 +3,34 @@
     <h2 class="section-title">{{ settingsData.title }}</h2>
     <p class="section-subtitle">{{ settingsData.subtitle }}</p>
     
-    <div class="settings-container">
+    <div class="settings-grid">
       <div 
-        v-for="section in settingsData.sections" 
-        :key="section.id"
-        class="settings-section"
+        v-for="person in settingsData.settings" 
+        :key="person.id"
+        class="person-item"
       >
-        <div class="section-header">
-          <i :class="section.icon" class="section-icon"></i>
-          <h3 class="section-name">{{ section.name }}</h3>
+        <div class="person-avatar">
+          <img 
+            v-if="person.avatar" 
+            :src="person.avatar" 
+            :alt="person.nickname"
+            class="avatar-image"
+          />
+          <div v-else class="avatar-placeholder">
+            <i class="fas fa-user"></i>
+          </div>
         </div>
-        
-        <div class="settings-list">
-          <div 
-            v-for="setting in section.settings" 
-            :key="setting.id"
-            class="setting-item"
-          >
-            <div class="setting-info">
-              <h4 class="setting-name">{{ setting.name }}</h4>
-              <p class="setting-description">{{ setting.description }}</p>
-            </div>
-            
-            <div class="setting-control">
-              <!-- 开关类型 -->
-              <label v-if="setting.type === 'switch'" class="switch">
-                <input 
-                  type="checkbox" 
-                  :checked="setting.value"
-                  @change="updateSetting(setting.id, $event.target.checked)"
-                >
-                <span class="slider"></span>
-              </label>
-              
-              <!-- 选择类型 -->
-              <select 
-                v-else-if="setting.type === 'select'"
-                :value="setting.value"
-                @change="updateSetting(setting.id, $event.target.value)"
-                class="select-control"
-              >
-                <option 
-                  v-for="option in setting.options" 
-                  :key="option.value"
-                  :value="option.value"
-                >
-                  {{ option.label }}
-                </option>
-              </select>
-            </div>
+        <div class="person-content">
+          <h3 class="person-name">{{ person.nickname }}</h3>
+          <p class="person-bio">{{ person.bio || '这个人很神秘，什么都没有留下...' }}</p>
+          <div class="person-actions">
+            <button 
+              v-if="person.wechat"
+              @click.stop="copyWechat(person.wechat)"
+              class="action-btn wechat-btn"
+            >
+              📱 复制微信号
+            </button>
           </div>
         </div>
       </div>
@@ -60,6 +39,8 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
+
 const props = defineProps({
   settingsData: {
     type: Object,
@@ -67,20 +48,35 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['updateSetting'])
-
-const updateSetting = (settingId, value) => {
-  emit('updateSetting', { settingId, value })
-  console.log(`设置 ${settingId} 更新为:`, value)
+const copyWechat = async (wechat) => {
+  try {
+    await navigator.clipboard.writeText(wechat)
+    alert('微信号已复制到剪贴板！')
+  } catch (err) {
+    console.error('复制失败:', err)
+    // 降级方案
+    const textArea = document.createElement('textarea')
+    textArea.value = wechat
+    document.body.appendChild(textArea)
+    textArea.select()
+    document.execCommand('copy')
+    document.body.removeChild(textArea)
+    alert('微信号已复制到剪贴板！')
+  }
 }
+
+onMounted(() => {
+  // 这里可以添加一些初始化逻辑
+  console.log(props.settingsData)
+})
 </script>
 
 <style scoped>
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 
 .adx-settings {
-  padding: 20px;
   height: 100%;
+  width: 75vw;
   overflow-y: auto;
 }
 
@@ -102,189 +98,177 @@ const updateSetting = (settingId, value) => {
   opacity: 0.9;
 }
 
-.settings-container {
-  max-width: 600px;
+.settings-grid {
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
-.settings-section {
+.person-item {
   background: rgba(26, 26, 26, 0.9);
   border: 2px solid rgba(255, 107, 53, 0.3);
   border-radius: 15px;
-  margin-bottom: 20px;
+  padding: 25px;
+  transition: all 0.3s ease;
   backdrop-filter: blur(10px);
-  overflow: hidden;
-}
-
-.section-header {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 20px;
-  background: rgba(255, 107, 53, 0.1);
-  border-bottom: 1px solid rgba(255, 107, 53, 0.3);
+  text-align: center;
 }
 
-.section-icon {
-  font-size: 1.5rem;
-  color: #ff6b35;
-  margin-right: 15px;
-  filter: drop-shadow(0 0 5px rgba(255, 107, 53, 0.5));
-}
-
-.section-name {
-  color: #ff6b35;
-  font-size: 1.3rem;
-  font-weight: 700;
-  margin: 0;
-}
-
-.settings-list {
-  padding: 0;
-}
-
-.setting-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  border-bottom: 1px solid rgba(255, 107, 53, 0.1);
-  transition: background 0.3s ease;
-}
-
-.setting-item:last-child {
-  border-bottom: none;
-}
-
-.setting-item:hover {
-  background: rgba(255, 107, 53, 0.05);
-}
-
-.setting-info {
-  flex: 1;
-  margin-right: 20px;
-}
-
-.setting-name {
-  color: #ffffff;
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 0 0 5px 0;
-}
-
-.setting-description {
-  color: #ffffff;
-  font-size: 0.9rem;
-  opacity: 0.7;
-  margin: 0;
-  line-height: 1.4;
-}
-
-.setting-control {
-  flex-shrink: 0;
-}
-
-/* 开关样式 */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 26px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(255, 255, 255, 0.2);
-  transition: 0.3s;
-  border-radius: 26px;
-  border: 2px solid rgba(255, 107, 53, 0.3);
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 18px;
-  width: 18px;
-  left: 2px;
-  bottom: 2px;
-  background-color: #ff6b35;
-  transition: 0.3s;
-  border-radius: 50%;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-}
-
-input:checked + .slider {
-  background-color: rgba(255, 107, 53, 0.3);
+.person-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(255, 107, 53, 0.4);
   border-color: #ff6b35;
 }
 
-input:checked + .slider:before {
-  transform: translateX(24px);
-  background-color: #ff6b35;
-  box-shadow: 0 2px 10px rgba(255, 107, 53, 0.5);
+.person-avatar {
+  margin-bottom: 20px;
 }
 
-/* 选择框样式 */
-.select-control {
-  background: rgba(26, 26, 26, 0.9);
-  border: 2px solid rgba(255, 107, 53, 0.3);
-  border-radius: 8px;
+.avatar-image, .avatar-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 107, 53, 0.5);
+  object-fit: cover;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(255, 107, 53, 0.3);
+}
+
+.avatar-placeholder {
+  background: rgba(255, 107, 53, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff6b35;
+  font-size: 2rem;
+}
+
+.person-content {
+  flex: 1;
+  width: 100%;
+}
+
+.person-name {
+  color: #ff6b35;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  text-shadow: 0 0 8px rgba(255, 107, 53, 0.3);
+}
+
+.person-bio {
   color: #ffffff;
-  padding: 8px 12px;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+  opacity: 0.9;
+  line-height: 1.5;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.person-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+  width: 100%;
+}
+
+.action-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px;
   font-size: 0.9rem;
-  min-width: 120px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  background: rgba(255, 107, 53, 0.2);
+  color: #ff6b35;
+  border: 2px solid rgba(255, 107, 53, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 120px;
+  text-align: center;
 }
 
-.select-control:focus {
-  outline: none;
-  border-color: #ff6b35;
-  box-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
+.action-btn:hover {
+  background: rgba(255, 107, 53, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
 }
 
-.select-control option {
-  background: #1a1a1a;
-  color: #ffffff;
+.wechat-btn {
+  background: rgba(76, 175, 80, 0.2);
+  color: #4CAF50;
+  border-color: rgba(76, 175, 80, 0.5);
+}
+
+.wechat-btn:hover {
+  background: rgba(76, 175, 80, 0.3);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
 }
 
 @media (max-width: 768px) {
+  .settings-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
   .section-title {
     font-size: 1.5rem;
   }
   
-  .setting-item {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 15px;
+  .person-item {
+    padding: 20px;
   }
   
-  .setting-info {
-    margin-right: 0;
+  .avatar-image, .avatar-placeholder {
+    width: 70px;
+    height: 70px;
   }
   
-  .setting-control {
-    align-self: flex-end;
+  .person-name {
+    font-size: 1.2rem;
   }
   
-  .section-header {
-    flex-direction: column;
-    text-align: center;
-    gap: 10px;
+  .person-bio {
+    font-size: 0.9rem;
+    min-height: 50px;
   }
   
-  .section-icon {
-    margin-right: 0;
+  .action-btn {
+    width: 100%;
+    max-width: 200px;
+    padding: 10px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .adx-settings {
+    width: 95vw;
+  }
+  
+  .person-item {
+    padding: 15px;
+  }
+  
+  .avatar-image, .avatar-placeholder {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .person-name {
+    font-size: 1.1rem;
   }
 }
 </style>

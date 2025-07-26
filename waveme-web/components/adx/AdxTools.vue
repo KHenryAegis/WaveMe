@@ -20,7 +20,7 @@
               @click.stop="copyDocUrl(tool.docUrl)"
               class="action-btn doc-btn"
             >
-              � 复制说明文档
+              � 复制说明文档地址
             </button>
           </div>
         </div>

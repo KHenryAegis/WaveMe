@@ -336,8 +336,6 @@ const saveChanges = async () => {
     
     // 构建要发送到后端的数据
     const saveData = {
-      bracelet_id: props.braceletId,
-      scene: "adx",
       style: "limit",
       data: photoIds
     };
@@ -345,9 +343,9 @@ const saveChanges = async () => {
     console.log('准备保存的数据:', saveData);
     
     // 发送到后端
-    const apiUrl = `${config.public.API_BASE}/templates/save`;
+    const apiUrl = `${config.public.API_BASE}/templates/${props.braceletId}/adx/gallery`;
     const response = await fetch(apiUrl, {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
