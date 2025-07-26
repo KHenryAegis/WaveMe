@@ -14,7 +14,7 @@ public class StorageServiceFactory implements StorageService {
     public StorageServiceFactory(@Value("${file.storage-type}") String storageType,
                                  LocalStorageService localStorageService,
                                  MinioStorageService minioStorageService) {
-        if ("minio".equalsIgnoreCase(storageType)) {
+       if ("minio".equalsIgnoreCase(storageType)) {
             this.delegate = minioStorageService;
         } else {
             this.delegate = localStorageService;

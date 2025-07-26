@@ -3,6 +3,8 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "templates", 
        uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "scene"}))
@@ -12,6 +14,7 @@ public class TemplateEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "bracelet_id", nullable = false)
     private User user;

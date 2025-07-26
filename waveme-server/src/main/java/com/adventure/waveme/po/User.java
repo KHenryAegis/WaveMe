@@ -2,6 +2,8 @@ package com.adventure.waveme.po;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -24,16 +26,16 @@ public class User {
     @Column(name = "bracelet_color")
     private String braceletColor;
 
-
+    @JsonManagedReference 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TemplateEntity> templates;
 
     public User() {}
 
-    public User(String phone, String braceletId, String moduleId, String braceletColor) {
+    public User(String phone, String braceletId, String sceneStyle, String braceletColor) {
         this.phone = phone;
         this.braceletId = braceletId;
-        this.moduleId = moduleId;
+        this.sceneStyle = sceneStyle;
         this.braceletColor = braceletColor;
     }
 
@@ -62,12 +64,12 @@ public class User {
         this.braceletId = braceletId;
     }
 
-    public String getModuleId() {
-        return moduleId;
+    public String getsceneStyle() {
+        return sceneStyle;
     }
 
-    public void setModuleId(String moduleId) {
-        this.moduleId = moduleId;
+    public void setsceneStyle(String sceneStyle) {
+        this.sceneStyle = sceneStyle;
     }
 
     public String getBraceletColor() {

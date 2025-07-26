@@ -18,6 +18,8 @@ public class MinioStorageService implements StorageService {
     private final MinioClient minioClient;
     private final FileRepository fileRepository;
     private final String bucket;
+    private final String minioUrl;
+
 
     public MinioStorageService(@Value("${minio.url}") String url,
                                @Value("${minio.access-key}") String accessKey,
@@ -27,6 +29,7 @@ public class MinioStorageService implements StorageService {
         this.minioClient = MinioClient.builder().endpoint(url).credentials(accessKey, secretKey).build();
         this.bucket = bucket;
         this.fileRepository = fileRepository;
+        this.minioUrl = url;
     }
 
     @Override
@@ -39,8 +42,8 @@ public class MinioStorageService implements StorageService {
                     .stream(file.getInputStream(), file.getSize(), -1)
                     .contentType(file.getContentType())
                     .build());
-            String url = "/minio/" + bucket + "/" + filename; // 可根据 nginx 或 minio 网关调整
-            return fileRepository.save(new FileEntity(filename, url, bucket + "/" + filename));
+            String fullUrl = minioUrl + "/" + bucket + "/" + filename;
+            return fileRepository.save(new FileEntity(filename, fullUrl, bucket + "/" + filename));
         } catch (Exception e) {
             throw new RuntimeException("Minio store file failed", e);
         }

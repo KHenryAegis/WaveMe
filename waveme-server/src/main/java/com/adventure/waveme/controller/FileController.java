@@ -17,10 +17,12 @@ public class FileController {
     private StorageServiceFactory storageService;
 
     @PostMapping("/upload")
-    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file, 
+                                    @RequestParam("description") String description) {
+        System.out.println(file.getOriginalFilename());
         FileEntity saved = storageService.storeFile(file);
-        UploadFileResponse resp = new UploadFileResponse(saved.getId(), saved.getName(), saved.getUrl());
-        return ResponseEntity.status(HttpStatus.CREATED).body(resp);
+        UploadFileResponse resp = new UploadFileResponse(saved.getId(), saved.getName(), description, saved.getUrl());
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
 
     @GetMapping("/download/{filename:.+}")

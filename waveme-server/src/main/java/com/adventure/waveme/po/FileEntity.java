@@ -9,11 +9,14 @@ public class FileEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column
     private String name;
 
     @Column(nullable = false, unique = true)
     private String url;
+
+    @Column
+    private String description;
 
     @Column(nullable = false)
     private String path;
@@ -56,5 +59,11 @@ public class FileEntity {
 
     public void setPath(String path) {
         this.path = path;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

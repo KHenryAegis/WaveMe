@@ -3,7 +3,7 @@ package com.adventure.waveme.dto;
 public class CreateUserRequest {
     private String phone;
     private String braceletId;
-    private String moduleId;
+    private String sceneStyle;
     private String braceletColor;
 
     // Getters & Setters
@@ -23,12 +23,11 @@ public class CreateUserRequest {
         this.braceletId = braceletId;
     }
 
-    public String getModuleId() {
-        return moduleId;
+    public String getSceneStyle() {
+        return sceneStyle;
     }
-
-    public void setModuleId(String moduleId) {
-        this.moduleId = moduleId;
+    public void setSceneStyle(String sceneStyle) {
+        this.sceneStyle = sceneStyle;
     }
 
     public String getBraceletColor() {
@@ -39,14 +38,5 @@ public class CreateUserRequest {
         this.braceletColor = braceletColor;
     }
 
-    
-    @Override
-    public String toString() {
-        return "User{" +
-                ", braceletId='" + braceletId + '\'' +
-                ", phone='" + phone + '\'' +
-                ", moduleId='" + moduleId + '\'' +
-                ", braceletColor='" + braceletColor + '\'' +
-                '}';
-    }
+
 }
